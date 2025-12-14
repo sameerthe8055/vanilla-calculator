@@ -1,34 +1,58 @@
 
 //    console.log( document.getElementsByClassName('input'));
 let display = document.getElementById('display');
-let resultShown = 0;
+let resultShown = true;
+let errorshown = false;
 
 function appendExp(key) {
-    if (resultShown){
-            resultShown = 0;
-            if (key>='0' && key <= '9'){display.value = "";}
-        }
-    display.value += key ;
+    if (resultShown) {
+        resultShown = false;
+        if ((key >= '0' && key <= '9' ) || display.value == 'Infinity'){
+             display.value = ""; 
+            }
+    }
+    if (errorshown){
+        errorshown = false;
+        display.value = ""; 
+    }
+    display.value += key;
 
 }
 
-function backspace(){
-    if (!display.value || resultShown == 1 ){return;}
-    if (resultShown == 2) {display.value = ""; return;}
-    display.value = display.value.slice(0, -1);
+function backspace() {
+    if (!display.value ) return; 
+    else if (errorshown) {
+        errorshown = false;
+        display.value = false;
+    }
+    else if (resultShown){
+        resultShown = false;
+        display.value = ""
+    }
+    else{
+        display.value = display.value.slice(0, -1);
+    }
+        
 }
 
-function calculate(){
+function calculate() {
+    if (!display.value || resultShown  ){
+        return;
+    } 
+    else if (errorshown){
+        return;
+    }
+
     try {
         display.value = eval(display.value);
-        resultShown = 1;
+        resultShown = true;
     } catch (error) {
         display.value = "Enter valid expression";
-        resultShown = 2;
+        errorshown = true;
     }
 }
 
-document.addEventListener('keydown',(event)=>{
+document.addEventListener('keydown', (event) => {
     const key = event.key;
 
     if (
@@ -40,13 +64,13 @@ document.addEventListener('keydown',(event)=>{
     ) {
         appendExp(key);
     }
-    else if (key == 'Enter') {
+    else if (key == 'Enter' || key == '=') {
         calculate()
     }
-    else if(key == 'Backspace'){
+    else if (key == 'Backspace') {
         backspace()
     }
-    else if(key == 'Delete'){
+    else if (key == 'Delete') {
         display.value = ""
     }
     else {
@@ -61,25 +85,17 @@ document.getElementById('clear').addEventListener('click', (() => {
 document.getElementById('backspace').addEventListener('click', backspace);
 
 document.getElementById('calculate').addEventListener('click', () => {
-    if (!display.value || resultShown == 1 ){
-        return;
-    } 
-    if (resultShown == 2){
-        display.value = "";
-        return;
-    }
-    else{
-        calculate()
-        return;
-    }
-    
+    calculate();
+    return;
+
+
 });
 
 [...document.getElementsByClassName('numip')].forEach(el => {
     console.log(el);
     el.addEventListener('click', (e) => {
-        
-        appendExp( e.target.innerText );
+
+        appendExp(e.target.innerText);
     })
 
 });
