@@ -23,7 +23,7 @@ function backspace() {
     if (!display.value ) return; 
     else if (errorshown) {
         errorshown = false;
-        display.value = false;
+        display.value = "";
     }
     else if (resultShown){
         resultShown = false;
