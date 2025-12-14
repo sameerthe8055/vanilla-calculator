@@ -27,7 +27,7 @@ function backspace() {
     }
     else if (resultShown){
         resultShown = false;
-        display.value = ""
+        display.value = "";
     }
     else{
         display.value = display.value.slice(0, -1);
@@ -92,7 +92,6 @@ document.getElementById('calculate').addEventListener('click', () => {
 });
 
 [...document.getElementsByClassName('numip')].forEach(el => {
-    console.log(el);
     el.addEventListener('click', (e) => {
 
         appendExp(e.target.innerText);
